@@ -55,7 +55,7 @@ Devuelve exactamente este JSON:
     const json = JSON.parse(text);
     res.json(json);
   } catch(e) {
-    res.status(500).json({ error: e.message });
+    res.status(500).json({ error: e.message, detail: e.response?.data });
   }
 });
 
@@ -67,8 +67,9 @@ app.use(async (req, res) => {
     });
     res.json(r.data);
   } catch(e) {
-    res.status(500).json({ error: e.message });
+    res.status(500).json({ error: e.message, detail: e.response?.data });
   }
 });
 
 app.listen(process.env.PORT || 8080, () => console.log("Proxy corriendo"));
+
