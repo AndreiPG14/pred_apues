@@ -40,7 +40,7 @@ Devuelve exactamente este JSON:
 }`;
 
     const r = await axios.post("https://api.anthropic.com/v1/messages", {
-      model: "claude-haiku-4-5-20251001",
+      model: "claude-sonnet-4-6",
       max_tokens: 1000,
       messages: [{ role: "user", content: prompt }]
     }, {
@@ -55,7 +55,7 @@ Devuelve exactamente este JSON:
     const json = JSON.parse(text);
     res.json(json);
   } catch(e) {
-    res.status(500).json({ error: e.message, detail: e.response?.data });
+    res.status(500).json({ error: e.message, detail: e.response?.data, status: e.response?.status, headers: JSON.stringify(e.config?.headers) });
   }
 });
 
@@ -67,11 +67,13 @@ app.use(async (req, res) => {
     });
     res.json(r.data);
   } catch(e) {
-    res.status(500).json({ error: e.message, detail: e.response?.data });
+    res.status(500).json({ error: e.message, detail: e.response?.data, status: e.response?.status, headers: JSON.stringify(e.config?.headers) });
   }
 });
 
 app.listen(process.env.PORT || 8080, () => console.log("Proxy corriendo"));
+
+
 
 
 
