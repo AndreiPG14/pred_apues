@@ -2,20 +2,20 @@
 const axios = require("axios");
 const app = express();
 
-const API_KEY = process.env.API_KEY || "20b03b767c78b8c3ad618f1830a6a6b8";
+const API_KEY = process.env.API_KEY || "fb0aaad7b0fc4a6db0b46b1df26a79cc";
 
 app.use(async (req, res) => {
   try {
-    const url = "https://v3.football.api-sports.io" + req.url;
-    console.log("Fetching:", url, "Key:", API_KEY.substring(0,8) + "...");
+    const url = "https://api.football-data.org/v4" + req.url;
+    console.log("Fetching:", url);
     const r = await axios.get(url, {
-      headers: { "x-apisports-key": API_KEY }
+      headers: { "X-Auth-Token": API_KEY }
     });
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.json(r.data);
   } catch(e) {
-    res.status(500).json({ error: e.message });
+    res.status(500).json({ error: e.message, status: e.response?.status });
   }
 });
 
-app.listen(process.env.PORT || 8080, () => console.log("Proxy corriendo en puerto", process.env.PORT || 8080));
+app.listen(process.env.PORT || 8080, () => console.log("Proxy corriendo"));
